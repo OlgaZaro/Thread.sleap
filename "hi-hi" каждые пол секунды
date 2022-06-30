@@ -1,0 +1,34 @@
+/*
+В классе Solution должен быть публичный статический метод ourInterruptMethod без параметров.
+Метод run должен выводить надпись "hi-hi" каждые пол секунды, пока не будет вызван метод ourInterruptMethod.
+Метод main должен создавать объект типа Thread передавая в конструктор объект типа TestThread.
+Метод main должен вызывать метод start у объекта типа Thread.
+Метод main должен вызывать метод ourInterruptMethod.
+*/
+
+public class Solution {
+    public static volatile boolean finish = false;
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread t = new Thread(new TestThread());
+        t.start();
+        Thread.sleep(3000);
+        ourInterruptMethod();
+    }
+
+    public static void ourInterruptMethod() {
+        finish = true;
+    }
+
+    public static class TestThread implements Runnable {
+        public void run() {
+            while (!finish) {
+                try {
+                    System.out.println("hi-hi");
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                }
+            }
+        }
+    }
+}
